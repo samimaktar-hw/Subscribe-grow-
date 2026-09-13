@@ -25,6 +25,8 @@
             font-family: 'Share Tech Mono', monospace;
             min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Matrix Scanline Background */
@@ -35,98 +37,19 @@
             background: linear-gradient(rgba(0, 255, 80, 0.03) 50%, transparent 50%);
             background-size: 100% 4px;
             pointer-events: none;
-            z-index: 90;
+            z-index: -1;
         }
 
         /* =========================================
-           LOADER SCREEN (Matched with your Image)
-        ========================================= */
-        #loader-screen {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at center, #05140a 0%, var(--bg-dark) 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            padding: 20px;
-            transition: opacity 0.5s ease;
-        }
-
-        .terminal-text {
-            width: 100%;
-            max-width: 400px;
-            color: var(--primary);
-            font-size: 14px;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            text-align: left;
-            text-shadow: 0 0 5px var(--primary-glow);
-        }
-
-        .terminal-text span.white { color: #fff; text-shadow: none; }
-
-        .loader-logo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 0 30px var(--primary), inset 0 0 20px var(--primary);
-            border: 2px solid var(--primary);
-            margin-bottom: 25px;
-            animation: pulse-glow 2s infinite alternate;
-        }
-
-        .welcome-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(22px, 5vw, 32px);
-            color: #fff;
-            text-shadow: 0 0 15px var(--primary);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            color: #a3f7ba;
-            font-size: 12px;
-            letter-spacing: 1px;
-            margin-bottom: 30px;
-        }
-
-        .countdown-box {
-            border: 1px solid var(--primary);
-            border-radius: 10px;
-            padding: 15px 40px;
-            text-align: center;
-            background: rgba(0, 255, 80, 0.05);
-            box-shadow: 0 0 15px rgba(0, 255, 80, 0.1);
-        }
-
-        .countdown-number {
-            display: block;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 40px;
-            color: var(--primary);
-            font-weight: bold;
-            text-shadow: 0 0 10px var(--primary);
-            margin-top: 5px;
-        }
-
-        @keyframes pulse-glow {
-            from { box-shadow: 0 0 20px var(--primary); }
-            to { box-shadow: 0 0 50px var(--primary), 0 0 10px #fff; }
-        }
-
-        /* =========================================
-           MAIN APP CONTAINER (Generator & Visitor)
+           MAIN APP CONTAINER (Direct Open)
         ========================================= */
         #app-container {
-            display: none;
+            display: block; /* Direct open, no loader */
             width: min(92%, 600px);
             margin: 40px auto;
             position: relative;
             z-index: 10;
+            flex: 1;
         }
 
         header.app-header {
@@ -135,11 +58,13 @@
         }
 
         header.app-header img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            box-shadow: 0 0 15px var(--primary);
+            box-shadow: 0 0 20px var(--primary);
+            border: 2px solid var(--primary);
             margin-bottom: 15px;
+            object-fit: cover;
         }
 
         .cyber-card {
@@ -188,13 +113,20 @@
         }
 
         .task-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
             background: rgba(57, 255, 114, 0.05);
-            padding: 10px;
+            padding: 15px;
             border-radius: 8px;
             border: 1px dashed rgba(57, 255, 114, 0.3);
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .task-row-top {
+            display: flex;
+            gap: 10px;
+            width: 100%;
         }
 
         .btn-cyber {
@@ -244,6 +176,7 @@
             border-radius: 6px;
             padding: 0 15px;
             cursor: pointer;
+            font-size: 16px;
         }
 
         /* Visitor Tasks */
@@ -291,48 +224,34 @@
             color: #a3f7ba;
             text-align: center;
         }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #4ade80;
+            border-top: 1px solid rgba(0, 255, 102, 0.2);
+            width: 100%;
+            margin-top: auto;
+        }
     </style>
 </head>
 <body>
 
     <!-- ==========================================
-         1. LOADER SCREEN (Matches your Image)
-    =========================================== -->
-    <div id="loader-screen">
-        <div class="terminal-text">
-            > Initializing Hexca Web Community...<br>
-            > Loading modules...<br>
-            > Checking system...<br>
-            > Establishing connection...<br>
-            > <span class="white">Ready.</span>
-        </div>
-
-        <!-- আপনার গিটহাবের logo.png ফাইলটি এখানে কাজ করবে -->
-        <img src="logo.png" alt="HEXCA WEB" class="loader-logo" onerror="this.src='https://sub4unlock.com/assets/img/512.png'">
-
-        <h1 class="welcome-title">WELCOME TO HEXCA WEB</h1>
-        <div class="subtitle">SECURE CONNECTION • COMMUNITY PORTAL</div>
-
-        <div class="countdown-box">
-            Opening community in
-            <span class="countdown-number" id="countdown">5</span>
-        </div>
-    </div>
-
-
-    <!-- ==========================================
-         2. MAIN APP INTERFACE
+         MAIN APP INTERFACE
     =========================================== -->
     <div id="app-container">
         
         <header class="app-header">
-            <img src="logo.png" alt="Logo" onerror="this.src='https://sub4unlock.com/assets/img/512.png'">
+            <!-- আপনার লোগো -->
+            <img src="logo.png" alt="Logo" id="header-logo" onerror="this.src='https://sub4unlock.com/assets/img/512.png'">
             <h2 style="color:#fff; font-family:'Orbitron', sans-serif;">HEXCA <span style="color:var(--primary)">WEB</span></h2>
         </header>
 
         <!-- ADMIN GENERATOR PANEL -->
         <div class="cyber-card" id="generator-panel">
-            <div class="card-title"><i class="fa-solid fa-code"></i> CREATE MULTIPLE LOCKED LINK</div>
+            <div class="card-title"><i class="fa-solid fa-code"></i> CREATE LOCKED LINK</div>
 
             <div id="tasks-container">
                 <!-- Task rows will be added here dynamically -->
@@ -388,6 +307,10 @@
 
     </div>
 
+    <footer>
+        &copy; 2026 HEXCAWEB.COM • SECURE LINK LOCKER ARCHITECTURE
+    </footer>
+
     <!-- ==========================================
          FIREBASE & LOGIC SCRIPT
     =========================================== -->
@@ -410,27 +333,9 @@
         const db = getFirestore(app);
 
         // UI Elements
-        const loaderScreen = document.getElementById('loader-screen');
-        const appContainer = document.getElementById('app-container');
         const generatorPanel = document.getElementById('generator-panel');
         const visitorPanel = document.getElementById('visitor-panel');
         const tasksContainer = document.getElementById('tasks-container');
-
-        // Countdown Logic (Matches the image)
-        let count = 5;
-        const countInterval = setInterval(() => {
-            count--;
-            document.getElementById('countdown').innerText = count;
-            if (count <= 0) {
-                clearInterval(countInterval);
-                loaderScreen.style.opacity = '0';
-                setTimeout(() => {
-                    loaderScreen.style.display = 'none';
-                    appContainer.style.display = 'block';
-                    checkUrlMode(); // Decide which panel to show
-                }, 500);
-            }
-        }, 1000);
 
         // Platform Templates
         const platforms = {
@@ -451,20 +356,37 @@
                 optionsHTML += `<option value="${key}">${platforms[key].name}</option>`;
             }
 
+            // Custom Text Input Option Added Here
             row.innerHTML = `
-                <select class="cyber-select task-platform" style="width: 35%;">
-                    ${optionsHTML}
-                </select>
-                <input type="url" class="cyber-input task-url" placeholder="Paste URL here..." required style="width: 50%;">
-                <button class="remove-btn" onclick="this.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+                <div class="task-row-top">
+                    <select class="cyber-select task-platform" style="flex: 1;" onchange="toggleCustomText(this)">
+                        ${optionsHTML}
+                    </select>
+                    <button class="remove-btn" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+                </div>
+                <!-- This input shows only if Custom Link is selected -->
+                <input type="text" class="cyber-input custom-label" placeholder="Write your own text (e.g., Like Video)" style="display: none;">
+                <input type="url" class="cyber-input task-url" placeholder="Paste URL here..." required>
             `;
             tasksContainer.appendChild(row);
+        }
+
+        // Toggle Custom Text Input
+        window.toggleCustomText = function(selectElement) {
+            const customInput = selectElement.parentElement.parentElement.querySelector('.custom-label');
+            if (selectElement.value === 'custom') {
+                customInput.style.display = 'block';
+                customInput.required = true;
+            } else {
+                customInput.style.display = 'none';
+                customInput.required = false;
+            }
         }
 
         // Initialize with one empty task
         addTaskRow();
 
-        // Mode Checker
+        // Mode Checker (Directly runs when page loads)
         async function checkUrlMode() {
             const urlParams = new URLSearchParams(window.location.search);
             const linkId = urlParams.get('id');
@@ -478,6 +400,8 @@
                 generatorPanel.style.display = 'block';
             }
         }
+
+        checkUrlMode();
 
         // ==========================================
         // GENERATOR LOGIC
@@ -493,16 +417,24 @@
             taskElements.forEach(row => {
                 const platform = row.querySelector('.task-platform').value;
                 const url = row.querySelector('.task-url').value.trim();
+                const customText = row.querySelector('.custom-label').value.trim();
+                
                 if(!url) isValid = false;
-                tasksList.push({ platform, url });
+                if(platform === 'custom' && !customText) isValid = false;
+
+                tasksList.push({ 
+                    platform: platform, 
+                    url: url, 
+                    customLabel: customText 
+                });
             });
 
             if (!finalUrl || !isValid || tasksList.length === 0) {
-                alert("TERMINAL ERROR: Please fill all URL fields properly.");
+                alert("TERMINAL ERROR: Please fill all URL fields properly. If 'Custom Link' is selected, you must type a name.");
                 return;
             }
 
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> GENERATING...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> GENERATING IN DATABASE...';
             btn.disabled = true;
 
             try {
@@ -516,11 +448,12 @@
                 document.getElementById('generated-link').innerText = shareableLink;
                 document.getElementById('result-box').style.display = 'block';
                 
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> LINK CREATED';
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> LINK CREATED SUCCESSFULLY';
                 btn.style.background = "#fff";
             } catch (error) {
-                console.error("Error: ", error);
-                alert("DATABASE ERROR! Check Firebase Rules.");
+                // Advanced Error Notification
+                console.error("Firebase Error: ", error);
+                alert("⚠️ LINK GENERATION FAILED!\n\nREASON: " + error.message + "\n\nSOLUTION: Go to your Firebase Console -> Firestore Database -> Click 'Create Database' -> Set Rules to 'allow read, write: if true;'");
                 btn.innerHTML = '<i class="fa-solid fa-lock"></i> GENERATE SECURE LINK';
                 btn.disabled = false;
             }
@@ -551,11 +484,11 @@
                     visitorData = docSnap.data();
                     renderVisitorButtons(visitorData.tasks);
                 } else {
-                    alert("ERROR: Link not found.");
+                    alert("ERROR: This link is invalid or has been deleted.");
                     window.location.href = window.location.pathname;
                 }
             } catch (error) {
-                alert("SYSTEM ERROR: Failed to load tasks.");
+                alert("SYSTEM ERROR: Failed to load tasks. Check your internet or Firebase Rules.");
             }
         }
 
@@ -568,9 +501,12 @@
             tasks.forEach((task, index) => {
                 const platInfo = platforms[task.platform] || platforms['custom'];
                 
+                // If it's custom, use the customLabel typed by the user, otherwise use the default name
+                const buttonText = (task.platform === 'custom' && task.customLabel) ? task.customLabel : platInfo.name;
+                
                 const btn = document.createElement('button');
                 btn.className = 'btn-cyber visitor-task-btn';
-                btn.innerHTML = `<i class="${platInfo.icon}"></i> <span class="btn-text">${platInfo.name}</span>`;
+                btn.innerHTML = `<i class="${platInfo.icon}"></i> <span class="btn-text">${buttonText}</span>`;
                 
                 btn.onclick = () => handleTaskClick(btn, task.url, tasks.length);
                 container.appendChild(btn);
@@ -591,7 +527,7 @@
                 
                 completedTasksCount++;
                 updateProgress(completedTasksCount, totalTasks);
-            }, 6000); // 6 Seconds wait time
+            }, 5000); // 5 Seconds verify time
         }
 
         function updateProgress(completed, total) {
